@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Giveaway</title>
 <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <style>
 :root{--accent:#f7c948;--accent2:#ff6b6b;--card:rgba(255,255,255,0.07);--border:rgba(255,255,255,0.13);--sub:rgba(255,255,255,0.6);}
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -157,13 +156,18 @@ input:checked + .slider:before{transform:translateX(24px);}
       <div class="modal-title">⚙️ Admin Panel</div>
       <button class="close-btn" onclick="closeAdmin()">✕</button>
     </div>
+
+    <!-- PASSWORD -->
     <div class="pw-screen" id="pwScreen">
       <p>🔒 Masukkan password admin</p>
       <input type="password" id="pwInput" placeholder="Password..." onkeydown="if(event.key==='Enter')checkPw()">
       <p class="pw-error" id="pwError">❌ Password salah!</p>
       <button class="save-btn" onclick="checkPw()" style="margin-top:14px">Masuk</button>
     </div>
+
+    <!-- SETTINGS -->
     <div id="settingsArea" style="display:none">
+
       <div class="sec-label">🔴 Status Giveaway</div>
       <div class="toggle-row">
         <div>
@@ -175,10 +179,11 @@ input:checked + .slider:before{transform:translateX(24px);}
           <span class="slider"></span>
         </label>
       </div>
+
       <div class="sec-label">🎁 Hadiah</div>
       <div class="field">
         <label>Nama Hadiah</label>
-        <input type="text" id="aPrizeName" placeholder="Contoh: Rare Sword">
+        <input type="text" id="aPrizeName" placeholder="Contoh: Set Sailor Piece">
       </div>
       <div class="field">
         <label>Deskripsi Hadiah</label>
@@ -188,6 +193,7 @@ input:checked + .slider:before{transform:translateX(24px);}
         <label>URL Gambar</label>
         <input type="url" id="aPrizeImg" placeholder="https://...">
       </div>
+
       <div class="sec-label">📝 Teks Halaman</div>
       <div class="field">
         <label>Judul</label>
@@ -197,37 +203,33 @@ input:checked + .slider:before{transform:translateX(24px);}
         <label>Subtitle</label>
         <input type="text" id="aSubtitle" placeholder="Masuk dan menangkan...">
       </div>
+
       <div class="sec-label">🎨 Tema Warna</div>
       <div class="theme-grid" id="themeGrid"></div>
-      <div class="sec-label">📧 EmailJS</div>
+
+      <div class="sec-label">📧 Web3Forms (Notifikasi Email)</div>
       <div class="field">
-        <label>Service ID</label>
-        <input type="text" id="aServiceId" placeholder="service_xxxxxxx">
-      </div>
-      <div class="field">
-        <label>Template ID</label>
-        <input type="text" id="aTemplateId" placeholder="template_xxxxxxx">
-      </div>
-      <div class="field">
-        <label>Public Key</label>
-        <input type="text" id="aPubKey" placeholder="public key EmailJS">
+        <label>Access Key</label>
+        <input type="text" id="aW3fKey" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx">
       </div>
       <div class="info-box">
-        <strong>Variabel yang dikirim ke template EmailJS:</strong><br>
-        <strong>{{username}}</strong> — username Roblox peserta<br>
-        <strong>{{reason}}</strong> — alasan peserta<br>
-        <strong>{{time}}</strong> — waktu daftar<br>
-        <strong>{{prize}}</strong> — nama hadiah<br>
-        <strong>{{name}}</strong> — sama dengan username (untuk From Name)<br>
-        <strong>{{email}}</strong> — kosong (bisa dihapus dari Reply To)
+        <strong>Cara dapat Access Key (2 menit):</strong><br>
+        1. Buka <strong>web3forms.com</strong><br>
+        2. Masukkan email kamu → klik <strong>Get Access Key</strong><br>
+        3. Cek email → copy Access Key-nya<br>
+        4. Paste di field di atas → Simpan<br><br>
+        ✅ Gratis 250 email/bulan, tanpa whitelist domain!
       </div>
+
       <div class="sec-label">🔑 Password Admin</div>
       <div class="field">
         <label>Ganti Password (kosongkan jika tidak mau ganti)</label>
         <input type="password" id="aNewPw" placeholder="Password baru min. 4 karakter">
       </div>
+
       <button class="save-btn" onclick="saveSettings()">💾 Simpan & Terapkan</button>
       <button class="copy-config-btn" onclick="copyConfig()">📋 Salin Config untuk GitHub (Permanen)</button>
+
       <div class="step">
         <b>Cara buat perubahan permanen di GitHub:</b><br>
         1. Klik <b>Simpan & Terapkan</b> dulu<br>
@@ -237,6 +239,7 @@ input:checked + .slider:before{transform:translateX(24px);}
         5. Hapus seluruh blok CONFIG lama, paste yang baru<br>
         6. Klik <b>Commit changes</b> → Netlify auto update ✅
       </div>
+
     </div>
   </div>
 </div>
@@ -249,14 +252,12 @@ const CONFIG = {
   giveawayOpen : true,
   title        : "GIVEAWAY!",
   subtitle     : "Masuk dan menangkan hadiah eksklusif",
-  prizeName    : "Set Sailor Piece",
-  prizeDesc    : "Giveaway set sailor piece",
+  prizeName    : "Nama Hadiah",
+  prizeDesc    : "Deskripsi hadiah. Edit di Admin Panel.",
   prizeImage   : "",
-  theme        : 8,
-  adminPassword: "taiajungede4",
-  ejsServiceId : "service_cgg86mm",
-  ejsTemplateId: "template_fkakeyi",
-  ejsPublicKey : "ry9CJ9nvA5togOaYE",
+  theme        : 0,
+  adminPassword: "admin123",
+  w3fKey       : "",
 };
 // ================================================================
 // === AKHIR KONFIGURASI UTAMA ====================================
@@ -386,27 +387,23 @@ function checkPw(){
 
 function populateSettings(){
   document.getElementById("aGiveawayOpen").checked = cfg.giveawayOpen;
-  document.getElementById("aPrizeName").value   = cfg.prizeName;
-  document.getElementById("aPrizeDesc").value   = cfg.prizeDesc;
-  document.getElementById("aPrizeImg").value    = cfg.prizeImage;
-  document.getElementById("aTitle").value       = cfg.title;
-  document.getElementById("aSubtitle").value    = cfg.subtitle;
-  document.getElementById("aServiceId").value   = cfg.ejsServiceId  || "";
-  document.getElementById("aTemplateId").value  = cfg.ejsTemplateId || "";
-  document.getElementById("aPubKey").value      = cfg.ejsPublicKey  || "";
-  document.getElementById("aNewPw").value       = "";
+  document.getElementById("aPrizeName").value  = cfg.prizeName;
+  document.getElementById("aPrizeDesc").value  = cfg.prizeDesc;
+  document.getElementById("aPrizeImg").value   = cfg.prizeImage;
+  document.getElementById("aTitle").value      = cfg.title;
+  document.getElementById("aSubtitle").value   = cfg.subtitle;
+  document.getElementById("aW3fKey").value     = cfg.w3fKey || "";
+  document.getElementById("aNewPw").value      = "";
 }
 
 function saveSettings(){
-  cfg.giveawayOpen  = document.getElementById("aGiveawayOpen").checked;
-  cfg.prizeName     = document.getElementById("aPrizeName").value.trim()  || cfg.prizeName;
-  cfg.prizeDesc     = document.getElementById("aPrizeDesc").value.trim()  || cfg.prizeDesc;
-  cfg.prizeImage    = document.getElementById("aPrizeImg").value.trim();
-  cfg.title         = document.getElementById("aTitle").value.trim()      || cfg.title;
-  cfg.subtitle      = document.getElementById("aSubtitle").value.trim()   || cfg.subtitle;
-  cfg.ejsServiceId  = document.getElementById("aServiceId").value.trim();
-  cfg.ejsTemplateId = document.getElementById("aTemplateId").value.trim();
-  cfg.ejsPublicKey  = document.getElementById("aPubKey").value.trim();
+  cfg.giveawayOpen = document.getElementById("aGiveawayOpen").checked;
+  cfg.prizeName    = document.getElementById("aPrizeName").value.trim() || cfg.prizeName;
+  cfg.prizeDesc    = document.getElementById("aPrizeDesc").value.trim() || cfg.prizeDesc;
+  cfg.prizeImage   = document.getElementById("aPrizeImg").value.trim();
+  cfg.title        = document.getElementById("aTitle").value.trim()     || cfg.title;
+  cfg.subtitle     = document.getElementById("aSubtitle").value.trim()  || cfg.subtitle;
+  cfg.w3fKey       = document.getElementById("aW3fKey").value.trim();
   const newPw = document.getElementById("aNewPw").value;
   if(newPw.length >= 4) cfg.adminPassword = newPw;
   else if(newPw.length > 0){ showToast("⚠️ Password min. 4 karakter!"); return; }
@@ -426,9 +423,7 @@ function copyConfig(){
   prizeImage   : "${cfg.prizeImage}",
   theme        : ${cfg.theme},
   adminPassword: "${cfg.adminPassword}",
-  ejsServiceId : "${cfg.ejsServiceId}",
-  ejsTemplateId: "${cfg.ejsTemplateId}",
-  ejsPublicKey : "${cfg.ejsPublicKey}",
+  w3fKey       : "${cfg.w3fKey}",
 };`;
   navigator.clipboard.writeText(snippet)
     .then(()=>showToast("📋 Config tersalin! Paste di GitHub gantikan blok CONFIG lama"))
@@ -452,26 +447,29 @@ async function submitEntry(){
   btn.textContent = "⏳ Mendaftar...";
 
   let emailOk = false;
-  if(cfg.ejsServiceId && cfg.ejsTemplateId && cfg.ejsPublicKey){
+
+  if(cfg.w3fKey){
     try {
-      emailjs.init({ publicKey: cfg.ejsPublicKey });
-      await emailjs.send(
-        cfg.ejsServiceId,
-        cfg.ejsTemplateId,
-        {
-          // variabel utama giveaway
-          username : username,
-          reason   : reason,
-          time     : new Date().toLocaleString("id-ID"),
-          prize    : cfg.prizeName,
-          // variabel tambahan agar template EmailJS tidak error
-          name     : username,
-          email    : "",
-        }
-      );
-      emailOk = true;
+      const res = await fetch("https://api.web3forms.com/submit", {
+        method : "POST",
+        headers: { "Content-Type": "application/json", "Accept": "application/json" },
+        body   : JSON.stringify({
+          access_key: cfg.w3fKey,
+          subject   : "🎉 Pendaftar Giveaway Baru: " + username,
+          from_name : "Giveaway Website",
+          message   :
+            "Ada pendaftar giveaway baru!\n\n" +
+            "Username Roblox : " + username + "\n" +
+            "Hadiah          : " + cfg.prizeName + "\n" +
+            "Alasan          : " + reason + "\n" +
+            "Waktu           : " + new Date().toLocaleString("id-ID"),
+        })
+      });
+      const data = await res.json();
+      if(data.success){ emailOk = true; }
+      else { console.error("Web3Forms error:", data); }
     } catch(e){
-      console.error("EmailJS error:", e);
+      console.error("Fetch error:", e);
     }
   }
 
@@ -480,10 +478,10 @@ async function submitEntry(){
 
   if(emailOk){
     showToast("📧 Notifikasi email berhasil terkirim!");
-  } else if(!cfg.ejsServiceId){
-    showToast("ℹ️ EmailJS belum dikonfigurasi di Admin Panel");
+  } else if(!cfg.w3fKey){
+    showToast("ℹ️ Web3Forms belum dikonfigurasi di Admin Panel");
   } else {
-    showToast("⚠️ Email gagal terkirim, cek console F12");
+    showToast("⚠️ Email gagal, cek Access Key kamu");
   }
 }
 
