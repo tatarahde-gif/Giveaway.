@@ -180,6 +180,17 @@ input:checked + .slider:before{transform:translateX(24px);}
         </label>
       </div>
 
+      <div class="sec-label">⏰ Auto Tutup Giveaway</div>
+      <div class="field">
+        <label>Tutup Otomatis Pada Tanggal & Jam</label>
+        <input type="datetime-local" id="aCloseAt">
+      </div>
+      <div style="display:flex;gap:8px;margin-top:-6px;">
+        <button onclick="clearCloseAt()" style="flex:1;padding:10px;background:rgba(255,100,100,.15);border:1.5px solid rgba(255,100,100,.3);border-radius:11px;color:#ff6b6b;font-family:'Nunito',sans-serif;font-weight:700;font-size:.85rem;cursor:pointer;">🗑️ Hapus Timer</button>
+        <button onclick="previewCloseAt()" style="flex:1;padding:10px;background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.15);border-radius:11px;color:#fff;font-family:'Nunito',sans-serif;font-weight:700;font-size:.85rem;cursor:pointer;">👁️ Preview</button>
+      </div>
+      <div class="info-box" id="closeAtInfo" style="margin-top:10px;display:none;"></div>
+
       <div class="sec-label">🎁 Hadiah</div>
       <div class="field">
         <label>Nama Hadiah</label>
@@ -258,6 +269,7 @@ const CONFIG = {
   theme        : 0,
   adminPassword: "admin123",
   w3fKey       : "",
+  closeAt      : "",
 };
 // ================================================================
 // === AKHIR KONFIGURASI UTAMA ====================================
@@ -283,6 +295,14 @@ try {
 } catch(e){}
 
 function applyConfig(){
+  // Auto-close check
+  if(cfg.closeAt){
+    const closeTime = new Date(cfg.closeAt).getTime();
+    if(Date.now() >= closeTime){
+      cfg.giveawayOpen = false;
+    }
+  }
+
   const badge    = document.getElementById("mainBadge");
   const badgeTxt = document.getElementById("badgeText");
   if(cfg.giveawayOpen){
@@ -323,6 +343,7 @@ function applyConfig(){
     successBox.style.display= "none";
   }
   applyTheme(cfg.theme || 0);
+  startCountdown();
 }
 
 function applyTheme(idx){
@@ -393,6 +414,7 @@ function populateSettings(){
   document.getElementById("aTitle").value      = cfg.title;
   document.getElementById("aSubtitle").value   = cfg.subtitle;
   document.getElementById("aW3fKey").value     = cfg.w3fKey || "";
+  document.getElementById("aCloseAt").value    = cfg.closeAt || "";
   document.getElementById("aNewPw").value      = "";
 }
 
@@ -404,6 +426,7 @@ function saveSettings(){
   cfg.title        = document.getElementById("aTitle").value.trim()     || cfg.title;
   cfg.subtitle     = document.getElementById("aSubtitle").value.trim()  || cfg.subtitle;
   cfg.w3fKey       = document.getElementById("aW3fKey").value.trim();
+  cfg.closeAt      = document.getElementById("aCloseAt").value;
   const newPw = document.getElementById("aNewPw").value;
   if(newPw.length >= 4) cfg.adminPassword = newPw;
   else if(newPw.length > 0){ showToast("⚠️ Password min. 4 karakter!"); return; }
@@ -483,6 +506,73 @@ async function submitEntry(){
   } else {
     showToast("⚠️ Email gagal, cek Access Key kamu");
   }
+}
+
+// ================================================================
+// COUNTDOWN TIMER
+// ================================================================
+let countdownInterval = null;
+
+function startCountdown(){
+  if(countdownInterval) clearInterval(countdownInterval);
+  if(!cfg.closeAt || !cfg.giveawayOpen) return;
+
+  const closeTime = new Date(cfg.closeAt).getTime();
+
+  // Check every second
+  countdownInterval = setInterval(()=>{
+    const now  = Date.now();
+    const diff = closeTime - now;
+
+    if(diff <= 0){
+      clearInterval(countdownInterval);
+      cfg.giveawayOpen = false;
+      applyConfig();
+      showToast("🔒 Giveaway otomatis ditutup!");
+      return;
+    }
+
+    // Update countdown badge
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor((diff % 86400000) / 3600000);
+    const m = Math.floor((diff % 3600000)  / 60000);
+    const s = Math.floor((diff % 60000)    / 1000);
+
+    let txt = "TUTUP DALAM: ";
+    if(d > 0) txt += d + "h ";
+    txt += String(h).padStart(2,"0") + ":" +
+           String(m).padStart(2,"0") + ":" +
+           String(s).padStart(2,"0");
+
+    const badgeTxt = document.getElementById("badgeText");
+    if(badgeTxt && cfg.giveawayOpen) badgeTxt.textContent = txt;
+  }, 1000);
+}
+
+// Admin helpers
+function clearCloseAt(){
+  document.getElementById("aCloseAt").value = "";
+  document.getElementById("closeAtInfo").style.display = "none";
+  showToast("🗑️ Timer dihapus");
+}
+
+function previewCloseAt(){
+  const val = document.getElementById("aCloseAt").value;
+  const box = document.getElementById("closeAtInfo");
+  if(!val){ box.style.display="none"; showToast("⚠️ Pilih tanggal & jam dulu!"); return; }
+  const d   = new Date(val);
+  const now = Date.now();
+  const diff= d.getTime() - now;
+  if(diff <= 0){ box.innerHTML="<strong>⚠️ Waktu sudah lewat!</strong> Pilih waktu yang akan datang."; box.style.display="block"; return; }
+  const days= Math.floor(diff/86400000);
+  const hrs = Math.floor((diff%86400000)/3600000);
+  const mins= Math.floor((diff%3600000)/60000);
+  let sisa = "";
+  if(days>0) sisa += days + " hari ";
+  if(hrs>0)  sisa += hrs  + " jam ";
+  sisa += mins + " menit lagi";
+  box.innerHTML = `✅ Giveaway akan otomatis tutup pada:<br><strong>${d.toLocaleString("id-ID")}</strong><br>⏳ ${sisa}`;
+  box.style.display = "block";
 }
 
 function showToast(msg){
