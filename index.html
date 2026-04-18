@@ -26,10 +26,10 @@ h1.title{font-family:'Fredoka One',cursive;font-size:clamp(2.6rem,8vw,4.3rem);li
 .subtitle{color:var(--sub);font-size:.97rem;font-weight:600;margin-bottom:34px;animation:slideUp .7s ease both;}
 @keyframes slideUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
 .prize-card{background:var(--card);border:1px solid var(--border);border-radius:22px;overflow:hidden;margin-bottom:24px;backdrop-filter:blur(18px);box-shadow:0 20px 60px rgba(0,0,0,.3);animation:slideUp .8s ease both;}
-.prize-img-wrap{width:100%;min-height:200px;max-height:400px;background:rgba(255,255,255,.04);display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.prize-img-wrap{width:100%;min-height:200px;max-height:380px;background:rgba(255,255,255,.04);display:flex;align-items:center;justify-content:center;overflow:hidden;}
 .prize-img-wrap img{width:100%;height:auto;max-height:380px;object-fit:contain;transition:transform .4s;}
-.prize-img-wrap:hover img{transform:scale(1.04);}
-.img-placeholder{display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--sub);font-size:.88rem;}
+.prize-img-wrap:hover img{transform:scale(1.03);}
+.img-placeholder{display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--sub);font-size:.88rem;padding:40px;}
 .img-placeholder .icon{font-size:2.8rem;}
 .prize-info{padding:20px 22px;}
 .prize-label{font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:5px;}
@@ -42,6 +42,7 @@ label{display:block;font-size:12px;font-weight:800;letter-spacing:.5px;color:var
 input,textarea{width:100%;background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.11);border-radius:13px;padding:12px 15px;color:#fff;font-family:'Nunito',sans-serif;font-size:.94rem;font-weight:600;outline:none;transition:all .2s;resize:none;}
 input::placeholder,textarea::placeholder{color:rgba(255,255,255,.28);}
 input:focus,textarea:focus{border-color:var(--accent);background:rgba(255,255,255,.1);box-shadow:0 0 0 3px rgba(247,201,72,.14);}
+input[type="datetime-local"]{color-scheme:dark;}
 .char-count{text-align:right;font-size:11px;color:var(--sub);margin-top:3px;}
 .submit-btn{width:100%;padding:15px;border:none;border-radius:13px;background:linear-gradient(135deg,var(--accent),#f0a500);color:#111;font-family:'Fredoka One',cursive;font-size:1.12rem;cursor:pointer;transition:all .25s;margin-top:4px;}
 .submit-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 8px 28px rgba(247,201,72,.35);}
@@ -89,6 +90,12 @@ input:checked + .slider:before{transform:translateX(24px);}
 .info-box strong{color:var(--accent);}
 .step{background:rgba(255,255,255,.05);border-radius:11px;padding:12px 14px;margin-top:8px;font-size:.83rem;color:rgba(255,255,255,.7);line-height:1.7;}
 .step b{color:#fff;}
+.timer-btns{display:flex;gap:8px;margin-top:8px;}
+.timer-btns button{flex:1;padding:10px;border-radius:11px;font-family:'Nunito',sans-serif;font-weight:700;font-size:.85rem;cursor:pointer;transition:all .2s;}
+.btn-clear{background:rgba(255,100,100,.12);border:1.5px solid rgba(255,100,100,.3);color:#ff6b6b;}
+.btn-clear:hover{background:rgba(255,100,100,.22);}
+.btn-preview{background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.15);color:#fff;}
+.btn-preview:hover{background:rgba(255,255,255,.14);}
 .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(80px);background:#fff;color:#111;padding:11px 22px;border-radius:50px;font-weight:700;font-size:.88rem;z-index:999;transition:transform .3s ease;white-space:nowrap;box-shadow:0 8px 30px rgba(0,0,0,.3);}
 .toast.show{transform:translateX(-50%) translateY(0);}
 ::-webkit-scrollbar{width:5px;}
@@ -168,6 +175,7 @@ input:checked + .slider:before{transform:translateX(24px);}
     <!-- SETTINGS -->
     <div id="settingsArea" style="display:none">
 
+      <!-- STATUS -->
       <div class="sec-label">🔴 Status Giveaway</div>
       <div class="toggle-row">
         <div>
@@ -180,17 +188,19 @@ input:checked + .slider:before{transform:translateX(24px);}
         </label>
       </div>
 
+      <!-- TIMER -->
       <div class="sec-label">⏰ Auto Tutup Giveaway</div>
       <div class="field">
         <label>Tutup Otomatis Pada Tanggal & Jam</label>
         <input type="datetime-local" id="aCloseAt">
       </div>
-      <div style="display:flex;gap:8px;margin-top:-6px;">
-        <button onclick="clearCloseAt()" style="flex:1;padding:10px;background:rgba(255,100,100,.15);border:1.5px solid rgba(255,100,100,.3);border-radius:11px;color:#ff6b6b;font-family:'Nunito',sans-serif;font-weight:700;font-size:.85rem;cursor:pointer;">🗑️ Hapus Timer</button>
-        <button onclick="previewCloseAt()" style="flex:1;padding:10px;background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.15);border-radius:11px;color:#fff;font-family:'Nunito',sans-serif;font-weight:700;font-size:.85rem;cursor:pointer;">👁️ Preview</button>
+      <div class="timer-btns">
+        <button class="btn-clear" onclick="clearCloseAt()">🗑️ Hapus Timer</button>
+        <button class="btn-preview" onclick="previewCloseAt()">👁️ Preview</button>
       </div>
-      <div class="info-box" id="closeAtInfo" style="margin-top:10px;display:none;"></div>
+      <div class="info-box" id="closeAtInfo" style="display:none;margin-top:10px;"></div>
 
+      <!-- HADIAH -->
       <div class="sec-label">🎁 Hadiah</div>
       <div class="field">
         <label>Nama Hadiah</label>
@@ -205,6 +215,7 @@ input:checked + .slider:before{transform:translateX(24px);}
         <input type="url" id="aPrizeImg" placeholder="https://...">
       </div>
 
+      <!-- TEKS -->
       <div class="sec-label">📝 Teks Halaman</div>
       <div class="field">
         <label>Judul</label>
@@ -215,23 +226,25 @@ input:checked + .slider:before{transform:translateX(24px);}
         <input type="text" id="aSubtitle" placeholder="Masuk dan menangkan...">
       </div>
 
+      <!-- TEMA -->
       <div class="sec-label">🎨 Tema Warna</div>
       <div class="theme-grid" id="themeGrid"></div>
 
+      <!-- WEB3FORMS -->
       <div class="sec-label">📧 Web3Forms (Notifikasi Email)</div>
       <div class="field">
         <label>Access Key</label>
         <input type="text" id="aW3fKey" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx">
       </div>
       <div class="info-box">
-        <strong>Cara dapat Access Key (2 menit):</strong><br>
+        <strong>Cara dapat Access Key:</strong><br>
         1. Buka <strong>web3forms.com</strong><br>
-        2. Masukkan email kamu → klik <strong>Get Access Key</strong><br>
-        3. Cek email → copy Access Key-nya<br>
-        4. Paste di field di atas → Simpan<br><br>
-        ✅ Gratis 250 email/bulan, tanpa whitelist domain!
+        2. Masukkan email → klik <strong>Get Access Key</strong><br>
+        3. Cek email → copy Access Key → paste di atas<br>
+        ✅ Gratis 250 email/bulan, tanpa whitelist!
       </div>
 
+      <!-- PASSWORD -->
       <div class="sec-label">🔑 Password Admin</div>
       <div class="field">
         <label>Ganti Password (kosongkan jika tidak mau ganti)</label>
@@ -240,15 +253,14 @@ input:checked + .slider:before{transform:translateX(24px);}
 
       <button class="save-btn" onclick="saveSettings()">💾 Simpan & Terapkan</button>
       <button class="copy-config-btn" onclick="copyConfig()">📋 Salin Config untuk GitHub (Permanen)</button>
-
       <div class="step">
-        <b>Cara buat perubahan permanen di GitHub:</b><br>
-        1. Klik <b>Simpan & Terapkan</b> dulu<br>
+        <b>Cara buat perubahan permanen:</b><br>
+        1. Klik <b>Simpan & Terapkan</b><br>
         2. Klik <b>Salin Config untuk GitHub</b><br>
-        3. Buka <b>GitHub → index.html → ikon pensil ✏️</b><br>
-        4. Cari teks: <b>// === KONFIGURASI UTAMA ===</b><br>
-        5. Hapus seluruh blok CONFIG lama, paste yang baru<br>
-        6. Klik <b>Commit changes</b> → Netlify auto update ✅
+        3. Buka <b>GitHub → index.html → ✏️ Edit</b><br>
+        4. Cari: <b>// === KONFIGURASI UTAMA ===</b><br>
+        5. Hapus blok CONFIG lama → paste yang baru<br>
+        6. <b>Commit changes</b> → Netlify auto update ✅
       </div>
 
     </div>
@@ -263,12 +275,13 @@ const CONFIG = {
   giveawayOpen : true,
   title        : "GIVEAWAY!",
   subtitle     : "Masuk dan menangkan hadiah eksklusif",
-  prizeName    : "Set Sailor Piece",
-  prizeDesc    : "Giveaway set sailor piece",
-  prizeImage   : "https://www.image2url.com/r2/default/images/1776514515891-e2489244-2a81-4469-b84a-c282e8e05c0a.jpg",
-  theme        : 8,
-  adminPassword: "taiajungede4",
-  w3fKey       : "8a3d77f5-bfa2-4c1e-9a50-85c083dd2d18",
+  prizeName    : "Nama Hadiah",
+  prizeDesc    : "Deskripsi hadiah. Edit di Admin Panel.",
+  prizeImage   : "",
+  theme        : 0,
+  adminPassword: "admin123",
+  w3fKey       : "",
+  closeAt      : "",
 };
 // ================================================================
 // === AKHIR KONFIGURASI UTAMA ====================================
@@ -293,11 +306,15 @@ try {
   cfg = {...CONFIG, ...lc};
 } catch(e){}
 
+let countdownInterval = null;
+
+// ================================================================
+// APPLY CONFIG
+// ================================================================
 function applyConfig(){
-  // Auto-close check
+  // Cek auto-close
   if(cfg.closeAt){
-    const closeTime = new Date(cfg.closeAt).getTime();
-    if(Date.now() >= closeTime){
+    if(Date.now() >= new Date(cfg.closeAt).getTime()){
       cfg.giveawayOpen = false;
     }
   }
@@ -311,25 +328,28 @@ function applyConfig(){
     badge.className = "badge closed";
     badgeTxt.textContent = "GIVEAWAY DITUTUP";
   }
+
   document.getElementById("mainTitle").textContent    = cfg.title;
   document.getElementById("mainSubtitle").textContent = cfg.subtitle;
   document.getElementById("prizeName").textContent    = cfg.prizeName;
   document.getElementById("prizeDesc").textContent    = cfg.prizeDesc;
 
+  // Gambar
   const wrap   = document.getElementById("prizeImgWrap");
   const ph     = document.getElementById("imgPlaceholder");
   const oldImg = wrap.querySelector("img");
   if(cfg.prizeImage){
     if(oldImg){ oldImg.src = cfg.prizeImage; }
     else {
-      ph && (ph.style.display = "none");
+      ph && (ph.style.display="none");
       const img = document.createElement("img");
       img.src = cfg.prizeImage; img.alt = cfg.prizeName;
-      img.onerror = () => { img.remove(); ph && (ph.style.display="flex"); };
+      img.onerror = ()=>{ img.remove(); ph && (ph.style.display="flex"); };
       wrap.appendChild(img);
     }
   } else { oldImg && oldImg.remove(); ph && (ph.style.display="flex"); }
 
+  // Form vs Closed
   const formArea   = document.getElementById("formArea");
   const closedBox  = document.getElementById("closedBox");
   const successBox = document.getElementById("successBox");
@@ -341,10 +361,46 @@ function applyConfig(){
     closedBox.style.display = "block";
     successBox.style.display= "none";
   }
+
   applyTheme(cfg.theme || 0);
   startCountdown();
 }
 
+// ================================================================
+// COUNTDOWN
+// ================================================================
+function startCountdown(){
+  if(countdownInterval) clearInterval(countdownInterval);
+  if(!cfg.closeAt || !cfg.giveawayOpen) return;
+
+  const closeTime = new Date(cfg.closeAt).getTime();
+
+  countdownInterval = setInterval(()=>{
+    const diff = closeTime - Date.now();
+    if(diff <= 0){
+      clearInterval(countdownInterval);
+      cfg.giveawayOpen = false;
+      applyConfig();
+      showToast("🔒 Giveaway otomatis ditutup!");
+      return;
+    }
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor((diff % 86400000) / 3600000);
+    const m = Math.floor((diff % 3600000)  / 60000);
+    const s = Math.floor((diff % 60000)    / 1000);
+    let txt = "TUTUP DALAM: ";
+    if(d > 0) txt += d + "h ";
+    txt += String(h).padStart(2,"0") + ":" +
+           String(m).padStart(2,"0") + ":" +
+           String(s).padStart(2,"0");
+    const badgeTxt = document.getElementById("badgeText");
+    if(badgeTxt && cfg.giveawayOpen) badgeTxt.textContent = txt;
+  }, 1000);
+}
+
+// ================================================================
+// THEME
+// ================================================================
 function applyTheme(idx){
   const t = THEMES[idx] || THEMES[0];
   document.body.style.background = `linear-gradient(135deg,${t.b1},${t.b2},${t.b3})`;
@@ -368,12 +424,12 @@ function generateParticles(){
 function buildThemeGrid(){
   const grid = document.getElementById("themeGrid");
   grid.innerHTML = "";
-  THEMES.forEach((t,i) => {
+  THEMES.forEach((t,i)=>{
     const sw = document.createElement("div");
     sw.className = "swatch" + (cfg.theme===i ? " active" : "");
     sw.title = t.name;
     sw.style.background = `linear-gradient(135deg,${t.b1},${t.b2})`;
-    sw.onclick = () => {
+    sw.onclick = ()=>{
       document.querySelectorAll(".swatch").forEach(s=>s.classList.remove("active"));
       sw.classList.add("active");
       cfg.theme = i;
@@ -383,6 +439,9 @@ function buildThemeGrid(){
   });
 }
 
+// ================================================================
+// ADMIN
+// ================================================================
 function openAdmin(){
   document.getElementById("adminModal").classList.add("active");
   document.getElementById("pwScreen").style.display = "block";
@@ -407,25 +466,26 @@ function checkPw(){
 
 function populateSettings(){
   document.getElementById("aGiveawayOpen").checked = cfg.giveawayOpen;
+  document.getElementById("aCloseAt").value    = cfg.closeAt || "";
   document.getElementById("aPrizeName").value  = cfg.prizeName;
   document.getElementById("aPrizeDesc").value  = cfg.prizeDesc;
   document.getElementById("aPrizeImg").value   = cfg.prizeImage;
   document.getElementById("aTitle").value      = cfg.title;
   document.getElementById("aSubtitle").value   = cfg.subtitle;
   document.getElementById("aW3fKey").value     = cfg.w3fKey || "";
-  document.getElementById("aCloseAt").value    = cfg.closeAt || "";
   document.getElementById("aNewPw").value      = "";
+  document.getElementById("closeAtInfo").style.display = "none";
 }
 
 function saveSettings(){
   cfg.giveawayOpen = document.getElementById("aGiveawayOpen").checked;
+  cfg.closeAt      = document.getElementById("aCloseAt").value;
   cfg.prizeName    = document.getElementById("aPrizeName").value.trim() || cfg.prizeName;
   cfg.prizeDesc    = document.getElementById("aPrizeDesc").value.trim() || cfg.prizeDesc;
   cfg.prizeImage   = document.getElementById("aPrizeImg").value.trim();
   cfg.title        = document.getElementById("aTitle").value.trim()     || cfg.title;
   cfg.subtitle     = document.getElementById("aSubtitle").value.trim()  || cfg.subtitle;
   cfg.w3fKey       = document.getElementById("aW3fKey").value.trim();
-  cfg.closeAt      = document.getElementById("aCloseAt").value;
   const newPw = document.getElementById("aNewPw").value;
   if(newPw.length >= 4) cfg.adminPassword = newPw;
   else if(newPw.length > 0){ showToast("⚠️ Password min. 4 karakter!"); return; }
@@ -446,12 +506,46 @@ function copyConfig(){
   theme        : ${cfg.theme},
   adminPassword: "${cfg.adminPassword}",
   w3fKey       : "${cfg.w3fKey}",
+  closeAt      : "${cfg.closeAt}",
 };`;
   navigator.clipboard.writeText(snippet)
     .then(()=>showToast("📋 Config tersalin! Paste di GitHub gantikan blok CONFIG lama"))
     .catch(()=>prompt("Copy teks ini:",snippet));
 }
 
+// ================================================================
+// TIMER HELPERS
+// ================================================================
+function clearCloseAt(){
+  document.getElementById("aCloseAt").value = "";
+  document.getElementById("closeAtInfo").style.display = "none";
+  showToast("🗑️ Timer dihapus");
+}
+
+function previewCloseAt(){
+  const val = document.getElementById("aCloseAt").value;
+  const box = document.getElementById("closeAtInfo");
+  if(!val){ showToast("⚠️ Pilih tanggal & jam dulu!"); return; }
+  const closeTime = new Date(val).getTime();
+  const diff = closeTime - Date.now();
+  if(diff <= 0){
+    box.innerHTML = "<strong>⚠️ Waktu sudah lewat!</strong> Pilih waktu yang akan datang.";
+    box.style.display = "block"; return;
+  }
+  const d = Math.floor(diff / 86400000);
+  const h = Math.floor((diff % 86400000) / 3600000);
+  const m = Math.floor((diff % 3600000)  / 60000);
+  let sisa = "";
+  if(d > 0) sisa += d + " hari ";
+  if(h > 0) sisa += h + " jam ";
+  sisa += m + " menit lagi";
+  box.innerHTML = `✅ Giveaway tutup otomatis:<br><strong>${new Date(val).toLocaleString("id-ID")}</strong><br>⏳ ${sisa}`;
+  box.style.display = "block";
+}
+
+// ================================================================
+// SUBMIT
+// ================================================================
 document.getElementById("reason").addEventListener("input",function(){
   document.getElementById("charCount").textContent = this.value.length;
 });
@@ -460,22 +554,17 @@ async function submitEntry(){
   const username = document.getElementById("robloxUser").value.trim();
   const reason   = document.getElementById("reason").value.trim();
   const btn      = document.getElementById("submitBtn");
-
   if(!username){ showToast("⚠️ Username Roblox tidak boleh kosong!"); return; }
   if(!reason)  { showToast("⚠️ Tolong isi alasanmu!"); return; }
   if(reason.length < 20){ showToast("⚠️ Alasan terlalu pendek, min. 20 karakter!"); return; }
-
-  btn.disabled = true;
-  btn.textContent = "⏳ Mendaftar...";
-
+  btn.disabled = true; btn.textContent = "⏳ Mendaftar...";
   let emailOk = false;
-
   if(cfg.w3fKey){
     try {
-      const res = await fetch("https://api.web3forms.com/submit", {
-        method : "POST",
-        headers: { "Content-Type": "application/json", "Accept": "application/json" },
-        body   : JSON.stringify({
+      const res = await fetch("https://api.web3forms.com/submit",{
+        method:"POST",
+        headers:{"Content-Type":"application/json","Accept":"application/json"},
+        body: JSON.stringify({
           access_key: cfg.w3fKey,
           subject   : "🎉 Pendaftar Giveaway Baru: " + username,
           from_name : "Giveaway Website",
@@ -488,92 +577,20 @@ async function submitEntry(){
         })
       });
       const data = await res.json();
-      if(data.success){ emailOk = true; }
-      else { console.error("Web3Forms error:", data); }
-    } catch(e){
-      console.error("Fetch error:", e);
-    }
+      if(data.success) emailOk = true;
+      else console.error("Web3Forms:", data);
+    } catch(e){ console.error("Fetch error:", e); }
   }
-
   document.getElementById("formArea").style.display   = "none";
   document.getElementById("successBox").style.display = "block";
-
-  if(emailOk){
-    showToast("📧 Notifikasi email berhasil terkirim!");
-  } else if(!cfg.w3fKey){
-    showToast("ℹ️ Web3Forms belum dikonfigurasi di Admin Panel");
-  } else {
-    showToast("⚠️ Email gagal, cek Access Key kamu");
-  }
+  if(emailOk) showToast("📧 Notifikasi email berhasil terkirim!");
+  else if(!cfg.w3fKey) showToast("ℹ️ Web3Forms belum dikonfigurasi");
+  else showToast("⚠️ Email gagal, cek Access Key kamu");
 }
 
 // ================================================================
-// COUNTDOWN TIMER
+// TOAST & INIT
 // ================================================================
-let countdownInterval = null;
-
-function startCountdown(){
-  if(countdownInterval) clearInterval(countdownInterval);
-  if(!cfg.closeAt || !cfg.giveawayOpen) return;
-
-  const closeTime = new Date(cfg.closeAt).getTime();
-
-  // Check every second
-  countdownInterval = setInterval(()=>{
-    const now  = Date.now();
-    const diff = closeTime - now;
-
-    if(diff <= 0){
-      clearInterval(countdownInterval);
-      cfg.giveawayOpen = false;
-      applyConfig();
-      showToast("🔒 Giveaway otomatis ditutup!");
-      return;
-    }
-
-    // Update countdown badge
-    const d = Math.floor(diff / 86400000);
-    const h = Math.floor((diff % 86400000) / 3600000);
-    const m = Math.floor((diff % 3600000)  / 60000);
-    const s = Math.floor((diff % 60000)    / 1000);
-
-    let txt = "TUTUP DALAM: ";
-    if(d > 0) txt += d + "h ";
-    txt += String(h).padStart(2,"0") + ":" +
-           String(m).padStart(2,"0") + ":" +
-           String(s).padStart(2,"0");
-
-    const badgeTxt = document.getElementById("badgeText");
-    if(badgeTxt && cfg.giveawayOpen) badgeTxt.textContent = txt;
-  }, 1000);
-}
-
-// Admin helpers
-function clearCloseAt(){
-  document.getElementById("aCloseAt").value = "";
-  document.getElementById("closeAtInfo").style.display = "none";
-  showToast("🗑️ Timer dihapus");
-}
-
-function previewCloseAt(){
-  const val = document.getElementById("aCloseAt").value;
-  const box = document.getElementById("closeAtInfo");
-  if(!val){ box.style.display="none"; showToast("⚠️ Pilih tanggal & jam dulu!"); return; }
-  const d   = new Date(val);
-  const now = Date.now();
-  const diff= d.getTime() - now;
-  if(diff <= 0){ box.innerHTML="<strong>⚠️ Waktu sudah lewat!</strong> Pilih waktu yang akan datang."; box.style.display="block"; return; }
-  const days= Math.floor(diff/86400000);
-  const hrs = Math.floor((diff%86400000)/3600000);
-  const mins= Math.floor((diff%3600000)/60000);
-  let sisa = "";
-  if(days>0) sisa += days + " hari ";
-  if(hrs>0)  sisa += hrs  + " jam ";
-  sisa += mins + " menit lagi";
-  box.innerHTML = `✅ Giveaway akan otomatis tutup pada:<br><strong>${d.toLocaleString("id-ID")}</strong><br>⏳ ${sisa}`;
-  box.style.display = "block";
-}
-
 function showToast(msg){
   const t = document.getElementById("toast");
   t.textContent = msg; t.classList.add("show");
