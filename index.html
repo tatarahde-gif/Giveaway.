@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Giveaway</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+<!-- ============================================================
+     🔥 FIREBASE CONFIG — ISI BAGIAN INI
+     Cara dapat config: lihat panduan di Admin Panel website
+     ============================================================ -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+  // ⬇️ PASTE FIREBASE CONFIG KAMU DI SINI
+  const firebaseConfig = {
+    apiKey:            "PASTE_API_KEY_DISINI",
+    authDomain:        "PASTE_AUTH_DOMAIN_DISINI",
+    databaseURL:       "PASTE_DATABASE_URL_DISINI",
+    projectId:         "PASTE_PROJECT_ID_DISINI",
+    storageBucket:     "PASTE_STORAGE_BUCKET_DISINI",
+    messagingSenderId: "PASTE_MESSAGING_SENDER_ID_DISINI",
+    appId:             "PASTE_APP_ID_DISINI"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db  = getDatabase(app);
+
+  // Expose ke window biar bisa dipakai script biasa
+  window._fbSet     = (path, data) => set(ref(db, path), data);
+  window._fbListen  = (path, cb)   => onValue(ref(db, path), snap => cb(snap.val()));
+  window._fbReady   = true;
+
+  // Load config saat firebase siap
+  window._fbListen('giveaway/config', (data) => {
+    if (data) {
+      window._remoteConfig = data;
+      if (window._onConfigLoaded) window._onConfigLoaded(data);
+    }
+  });
+</script>
+
+<style>
+  :root {
+    --accent:  #f7c948;
+    --accent2: #ff6b6b;
+    --card:    rgba(255,255,255,0.07);
+    --border:  rgba(255,255,255,0.13);
+    --text:    #fff;
+    --sub:     rgba(255,255,255,0.6);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(135deg,#0f0c29,#302b63,#24243e);
+    background-attachment: fixed;
+    color: #fff;
+    overflow-x: hidden;
+    transition: background 0.7s ease;
+  }
+
+  /* PARTICLES */
+  .particles { position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden; }
+  .particle  {
+    position:absolute; border-radius:50%; opacity:0.13;
+    animation: floatUp linear infinite;
+  }
+  @keyframes floatUp {
+    0%   { transform:translateY(105vh) rotate(0deg);   opacity:0; }
+    10%  { opacity:0.13; }
+    90%  { opacity:0.13; }
+    100% { transform:translateY(-10vh) rotate(360deg); opacity:0; }
+  }
+
+  /* ADMIN BTN */
+  .admin-btn {
+    position:fixed; top:14px; right:14px; z-index:100;
+    background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.18);
+    color:#fff; padding:8px 16px; border-radius:50px; cursor:pointer;
+    font-family:'Nunito',sans-serif; font-weight:700; font-size:13px;
+    backdrop-filter:blur(10px); transition:all .2s;
+    display:flex; align-items:center; gap:6px;
+  }
+  .admin-btn:hover { background:rgba(255,255,255,0.2); transform:scale(1.04); }
+
+  /* CONTAINER */
+  .container {
+    position:relative; z-index:1;
+    max-width:660px; margin:0 auto;
+    padding:42px 18px 90px;
+  }
+
+  /* BADGE */
+  .badge {
+    display:inline-flex; align-items:center; gap:6px;
+    padding:4px 14px; border-radius:50px; font-size:12px;
+    font-weight:800; letter-spacing:1.5px; text-transform:uppercase;
+    margin-bottom:18px;
+    transition: all .4s;
+  }
+  .badge.open   { background:rgba(255,107,107,.18); border:1px solid rgba(255,107,107,.4); color:#ff6b6b; }
+  .badge.closed { background:rgba(150,150,150,.18); border:1px solid rgba(150,150,150,.4); color:#aaa; }
+
+  .live-dot { width:7px; height:7px; border-radius:50%; animation:pulse 1.2s ease-in-out infinite; }
+  .badge.open   .live-dot { background:#ff6b6b; }
+  .badge.closed .live-dot { background:#aaa; animation:none; }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(1.3)} }
+
+  /* TITLE */
+  h1.title {
+    font-family:'Fredoka One',cursive;
+    font-size:clamp(2.6rem,8vw,4.3rem);
+    line-height:1;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+    margin-bottom:6px;
+    animation:slideUp .6s ease both;
+  }
+  .subtitle { color:var(--sub); font-size:.97rem; font-weight:600; margin-bottom:34px; animation:slideUp .7s ease both; }
+  @keyframes slideUp { from{opacity:0;transform:translateY(22px)} to{opacity:1;transform:translateY(0)} }
+
+  /* PRIZE CARD */
+  .prize-card {
+    background:var(--card); border:1px solid var(--border);
+    border-radius:22px; overflow:hidden; margin-bottom:26px;
+    backdrop-filter:blur(18px); box-shadow:0 20px 60px rgba(0,0,0,.3);
+    animation:slideUp .8s ease both;
+  }
+  .prize-img-wrap {
+    width:100%; height:250px;
+    background:rgba(255,255,255,.04);
+    display:flex; align-items:center; justify-content:center; overflow:hidden;
+  }
+  .prize-img-wrap img { width:100%; height:100%; object-fit:cover; transition:transform .4s; }
+  .prize-img-wrap:hover img { transform:scale(1.04); }
+  .img-placeholder { display:flex; flex-direction:column; align-items:center; gap:8px; color:var(--sub); font-size:.88rem; }
+  .img-placeholder .icon { font-size:2.8rem; }
+
+  .prize-info { padding:20px 22px; }
+  .prize-label { font-size:11px; font-weight:800; letter-spacing:2px; text-transform:uppercase; color:var(--accent); margin-bottom:5px; }
+  .prize-name  { font-family:'Fredoka One',cursive; font-size:1.8rem; margin-bottom:5px; }
+  .prize-desc  { color:var(--sub); font-size:.91rem; line-height:1.6; }
+
+  /* FORM / CLOSED / SUCCESS CARD */
+  .form-card {
+    background:var(--card); border:1px solid var(--border);
+    border-radius:22px; padding:26px 24px;
+    backdrop-filter:blur(18px); box-shadow:0 20px 60px rgba(0,0,0,.3);
+    animation:slideUp .9s ease both;
+  }
+  .form-title { font-family:'Fredoka One',cursive; font-size:1.35rem; margin-bottom:18px; }
+
+  .field { margin-bottom:16px; }
+  label { display:block; font-size:12px; font-weight:800; letter-spacing:.5px; color:var(--sub); margin-bottom:7px; text-transform:uppercase; }
+  input, textarea {
+    width:100%; background:rgba(255,255,255,.06); border:1.5px solid rgba(255,255,255,.11);
+    border-radius:13px; padding:12px 15px; color:#fff;
+    font-family:'Nunito',sans-serif; font-size:.94rem; font-weight:600;
+    outline:none; transition:all .2s; resize:none;
+  }
+  input::placeholder, textarea::placeholder { color:rgba(255,255,255,.28); }
+  input:focus, textarea:focus {
+    border-color:var(--accent); background:rgba(255,255,255,.1);
+    box-shadow:0 0 0 3px rgba(247,201,72,.14);
+  }
+  .char-count { text-align:right; font-size:11px; color:var(--sub); margin-top:3px; }
+
+  .submit-btn {
+    width:100%; padding:15px; border:none; border-radius:13px;
+    background:linear-gradient(135deg,var(--accent),#f0a500);
+    color:#111; font-family:'Fredoka One',cursive; font-size:1.12rem;
+    cursor:pointer; transition:all .25s; margin-top:4px;
+  }
+  .submit-btn:hover:not(:disabled) { transform:translateY(-2px); box-shadow:0 8px 28px rgba(247,201,72,.35); }
+  .submit-btn:disabled { opacity:.55; cursor:not-allowed; }
+
+  /* CLOSED STATE */
+  .closed-box { text-align:center; padding:40px 20px; }
+  .closed-box .big-emoji { font-size:3.8rem; margin-bottom:14px; }
+  .closed-box h3 { font-family:'Fredoka One',cursive; font-size:1.75rem; color:#aaa; margin-bottom:8px; }
+  .closed-box p  { color:var(--sub); font-size:.93rem; line-height:1.65; }
+
+  /* SUCCESS STATE */
+  .success-box { display:none; text-align:center; padding:40px 20px; }
+  .success-box .big-emoji { font-size:3.8rem; margin-bottom:14px; animation:bounceIn .5s ease; }
+  @keyframes bounceIn { 0%{transform:scale(0)} 60%{transform:scale(1.2)} 100%{transform:scale(1)} }
+  .success-box h3 { font-family:'Fredoka One',cursive; font-size:1.75rem; color:var(--accent); margin-bottom:8px; }
+  .success-box p  { color:var(--sub); font-size:.93rem; line-height:1.65; }
+
+  /* LOADING STATE */
+  .loading-overlay {
+    position:fixed; inset:0; background:rgba(15,12,41,.9);
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    z-index:500; gap:16px; transition:opacity .4s;
+  }
+  .loading-overlay.hide { opacity:0; pointer-events:none; }
+  .spinner {
+    width:44px; height:44px; border:3px solid rgba(247,201,72,.2);
+    border-top-color:var(--accent); border-radius:50%;
+    animation:spin .8s linear infinite;
+  }
+  @keyframes spin { to{transform:rotate(360deg)} }
+  .loading-overlay p { color:var(--sub); font-size:.9rem; font-weight:600; }
+
+  /* ===== ADMIN MODAL ===== */
+  .modal-overlay {
+    display:none; position:fixed; inset:0;
+    background:rgba(0,0,0,.75); backdrop-filter:blur(6px);
+    z-index:200; align-items:center; justify-content:center; padding:18px;
+  }
+  .modal-overlay.active { display:flex; }
+  .modal {
+    background:#1a1830; border:1px solid rgba(255,255,255,.11);
+    border-radius:22px; padding:30px; width:100%; max-width:510px;
+    max-height:90vh; overflow-y:auto;
+    animation:modalIn .3s ease;
+  }
+  @keyframes modalIn { from{opacity:0;transform:scale(.92)translateY(18px)} to{opacity:1;transform:none} }
