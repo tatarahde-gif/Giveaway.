@@ -213,12 +213,13 @@ input:checked + .slider:before{transform:translateX(24px);}
         <input type="text" id="aPubKey" placeholder="public key EmailJS">
       </div>
       <div class="info-box">
-        <strong>Setup EmailJS:</strong><br>
-        1. Daftar gratis di <strong>emailjs.com</strong><br>
-        2. Add Email Service → dapat <strong>Service ID</strong><br>
-        3. Buat Template → dapat <strong>Template ID</strong><br>
-        Variabel template: <strong>{{username}} {{reason}} {{time}} {{prize}}</strong><br>
-        4. Account → API Keys → copy <strong>Public Key</strong>
+        <strong>Variabel yang dikirim ke template EmailJS:</strong><br>
+        <strong>{{username}}</strong> — username Roblox peserta<br>
+        <strong>{{reason}}</strong> — alasan peserta<br>
+        <strong>{{time}}</strong> — waktu daftar<br>
+        <strong>{{prize}}</strong> — nama hadiah<br>
+        <strong>{{name}}</strong> — sama dengan username (untuk From Name)<br>
+        <strong>{{email}}</strong> — kosong (bisa dihapus dari Reply To)
       </div>
       <div class="sec-label">🔑 Password Admin</div>
       <div class="field">
@@ -232,7 +233,7 @@ input:checked + .slider:before{transform:translateX(24px);}
         1. Klik <b>Simpan & Terapkan</b> dulu<br>
         2. Klik <b>Salin Config untuk GitHub</b><br>
         3. Buka <b>GitHub → index.html → ikon pensil ✏️</b><br>
-        4. Tekan <b>Ctrl+H</b> atau cari teks: <b>// === KONFIGURASI UTAMA ===</b><br>
+        4. Cari teks: <b>// === KONFIGURASI UTAMA ===</b><br>
         5. Hapus seluruh blok CONFIG lama, paste yang baru<br>
         6. Klik <b>Commit changes</b> → Netlify auto update ✅
       </div>
@@ -243,7 +244,6 @@ input:checked + .slider:before{transform:translateX(24px);}
 <script>
 // ================================================================
 // === KONFIGURASI UTAMA ==========================================
-// Untuk ubah permanen: edit bagian ini di GitHub lalu commit
 // ================================================================
 const CONFIG = {
   giveawayOpen : true,
@@ -291,10 +291,10 @@ function applyConfig(){
     badge.className = "badge closed";
     badgeTxt.textContent = "GIVEAWAY DITUTUP";
   }
-  document.getElementById("mainTitle").textContent   = cfg.title;
-  document.getElementById("mainSubtitle").textContent= cfg.subtitle;
-  document.getElementById("prizeName").textContent   = cfg.prizeName;
-  document.getElementById("prizeDesc").textContent   = cfg.prizeDesc;
+  document.getElementById("mainTitle").textContent    = cfg.title;
+  document.getElementById("mainSubtitle").textContent = cfg.subtitle;
+  document.getElementById("prizeName").textContent    = cfg.prizeName;
+  document.getElementById("prizeDesc").textContent    = cfg.prizeDesc;
 
   const wrap   = document.getElementById("prizeImgWrap");
   const ph     = document.getElementById("imgPlaceholder");
@@ -310,9 +310,9 @@ function applyConfig(){
     }
   } else { oldImg && oldImg.remove(); ph && (ph.style.display="flex"); }
 
-  const formArea  = document.getElementById("formArea");
-  const closedBox = document.getElementById("closedBox");
-  const successBox= document.getElementById("successBox");
+  const formArea   = document.getElementById("formArea");
+  const closedBox  = document.getElementById("closedBox");
+  const successBox = document.getElementById("successBox");
   if(cfg.giveawayOpen){
     formArea.style.display  = "block";
     closedBox.style.display = "none";
@@ -443,28 +443,54 @@ async function submitEntry(){
   const username = document.getElementById("robloxUser").value.trim();
   const reason   = document.getElementById("reason").value.trim();
   const btn      = document.getElementById("submitBtn");
+
   if(!username){ showToast("⚠️ Username Roblox tidak boleh kosong!"); return; }
   if(!reason)  { showToast("⚠️ Tolong isi alasanmu!"); return; }
   if(reason.length < 20){ showToast("⚠️ Alasan terlalu pendek, min. 20 karakter!"); return; }
-  btn.disabled = true; btn.textContent = "⏳ Mendaftar...";
+
+  btn.disabled = true;
+  btn.textContent = "⏳ Mendaftar...";
+
   let emailOk = false;
   if(cfg.ejsServiceId && cfg.ejsTemplateId && cfg.ejsPublicKey){
     try {
-      emailjs.init({publicKey: cfg.ejsPublicKey});
-      await emailjs.send(cfg.ejsServiceId, cfg.ejsTemplateId,
-        {username, reason, time:new Date().toLocaleString("id-ID"), prize:cfg.prizeName});
+      emailjs.init({ publicKey: cfg.ejsPublicKey });
+      await emailjs.send(
+        cfg.ejsServiceId,
+        cfg.ejsTemplateId,
+        {
+          // variabel utama giveaway
+          username : username,
+          reason   : reason,
+          time     : new Date().toLocaleString("id-ID"),
+          prize    : cfg.prizeName,
+          // variabel tambahan agar template EmailJS tidak error
+          name     : username,
+          email    : "",
+        }
+      );
       emailOk = true;
-    } catch(e){ console.error("EmailJS:",e); }
+    } catch(e){
+      console.error("EmailJS error:", e);
+    }
   }
+
   document.getElementById("formArea").style.display   = "none";
   document.getElementById("successBox").style.display = "block";
-  if(emailOk) showToast("📧 Notifikasi email terkirim!");
+
+  if(emailOk){
+    showToast("📧 Notifikasi email berhasil terkirim!");
+  } else if(!cfg.ejsServiceId){
+    showToast("ℹ️ EmailJS belum dikonfigurasi di Admin Panel");
+  } else {
+    showToast("⚠️ Email gagal terkirim, cek console F12");
+  }
 }
 
 function showToast(msg){
   const t = document.getElementById("toast");
   t.textContent = msg; t.classList.add("show");
-  setTimeout(()=>t.classList.remove("show"),3500);
+  setTimeout(()=>t.classList.remove("show"), 3500);
 }
 
 document.getElementById("adminModal").addEventListener("click",function(e){
