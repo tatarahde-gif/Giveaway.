@@ -221,4 +221,817 @@
     max-height:90vh; overflow-y:auto;
     animation:modalIn .3s ease;
   }
-  @keyframes modalIn { from{opacity:0;transform:scale(.92)translateY(18px)} to{opacity:1;transform:none} }
+  @keyframes modalIn { from{opacity:0;transform:scale(.92)translateY(18px)} to{opacity:1;transform:none} }    color: #fff;
+    padding: 8px 16px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    backdrop-filter: blur(10px);
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .admin-btn:hover { background: rgba(255,255,255,0.2); transform: scale(1.05); }
+
+  /* BADGE */
+  .live-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,107,107,0.2);
+    border: 1px solid rgba(255,107,107,0.4);
+    color: #ff6b6b;
+    padding: 4px 14px;
+    border-radius: 50px;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .live-dot {
+    width: 7px; height: 7px;
+    background: #ff6b6b;
+    border-radius: 50%;
+    animation: pulse 1.2s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.3)} }
+
+  /* TITLE */
+  h1.title {
+    font-family: 'Fredoka One', cursive;
+    font-size: clamp(2.8rem, 8vw, 4.5rem);
+    line-height: 1;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 8px;
+    animation: slideUp 0.6s ease both;
+  }
+
+  .subtitle {
+    color: var(--subtext);
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 36px;
+    animation: slideUp 0.7s ease both;
+  }
+
+  @keyframes slideUp {
+    from { opacity:0; transform: translateY(24px); }
+    to   { opacity:1; transform: translateY(0); }
+  }
+
+  /* PRIZE CARD */
+  .prize-card {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 24px;
+    overflow: hidden;
+    margin-bottom: 28px;
+    backdrop-filter: blur(20px);
+    animation: slideUp 0.8s ease both;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  }
+
+  .prize-image-wrapper {
+    width: 100%;
+    height: 260px;
+    background: rgba(255,255,255,0.04);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .prize-image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+  .prize-image-wrapper:hover img { transform: scale(1.04); }
+
+  .prize-image-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    color: var(--subtext);
+    font-size: 0.9rem;
+  }
+  .prize-image-placeholder .icon { font-size: 3rem; }
+
+  .prize-info {
+    padding: 22px 24px;
+  }
+
+  .prize-label {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+
+  .prize-name {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.9rem;
+    margin-bottom: 6px;
+    color: #fff;
+  }
+
+  .prize-desc {
+    color: var(--subtext);
+    font-size: 0.92rem;
+    line-height: 1.6;
+  }
+
+  /* FORM CARD */
+  .form-card {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 24px;
+    padding: 28px 26px;
+    backdrop-filter: blur(20px);
+    animation: slideUp 0.9s ease both;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    margin-bottom: 16px;
+  }
+
+  .form-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.4rem;
+    margin-bottom: 20px;
+    color: #fff;
+  }
+
+  .field {
+    margin-bottom: 18px;
+  }
+
+  label {
+    display: block;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    color: var(--subtext);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+
+  input, textarea {
+    width: 100%;
+    background: rgba(255,255,255,0.06);
+    border: 1.5px solid rgba(255,255,255,0.12);
+    border-radius: 14px;
+    padding: 13px 16px;
+    color: #fff;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    outline: none;
+    transition: all 0.2s;
+    resize: none;
+  }
+
+  input::placeholder, textarea::placeholder { color: rgba(255,255,255,0.3); }
+
+  input:focus, textarea:focus {
+    border-color: var(--accent);
+    background: rgba(255,255,255,0.1);
+    box-shadow: 0 0 0 3px rgba(247,201,72,0.15);
+  }
+
+  .char-count {
+    text-align: right;
+    font-size: 11px;
+    color: var(--subtext);
+    margin-top: 4px;
+  }
+
+  /* SUBMIT BUTTON */
+  .submit-btn {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, var(--accent), #f0a500);
+    border: none;
+    border-radius: 14px;
+    color: #111;
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.15rem;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.25s;
+    position: relative;
+    overflow: hidden;
+    margin-top: 4px;
+  }
+
+  .submit-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(247,201,72,0.35);
+  }
+  .submit-btn:active:not(:disabled) { transform: translateY(0); }
+  .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+  /* SUCCESS STATE */
+  .success-box {
+    display: none;
+    text-align: center;
+    padding: 40px 20px;
+  }
+  .success-box .big-emoji { font-size: 4rem; margin-bottom: 16px; animation: bounceIn 0.5s ease; }
+  @keyframes bounceIn { 0%{transform:scale(0)} 60%{transform:scale(1.2)} 100%{transform:scale(1)} }
+  .success-box h3 { font-family:'Fredoka One',cursive; font-size:1.8rem; margin-bottom:8px; color: var(--accent); }
+  .success-box p { color: var(--subtext); font-size:0.95rem; line-height:1.6; }
+
+  /* ADMIN MODAL */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.75);
+    backdrop-filter: blur(6px);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .modal-overlay.active { display: flex; }
+
+  .modal {
+    background: #1a1830;
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 24px;
+    padding: 32px;
+    width: 100%;
+    max-width: 520px;
+    max-height: 90vh;
+    overflow-y: auto;
+    animation: modalIn 0.3s ease;
+  }
+  @keyframes modalIn { from{opacity:0;transform:scale(0.9)translateY(20px)} to{opacity:1;transform:none} }
+
+  .modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 28px;
+  }
+
+  .modal-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.5rem;
+    color: var(--accent);
+  }
+
+  .close-btn {
+    background: rgba(255,255,255,0.1);
+    border: none;
+    color: #fff;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+  }
+  .close-btn:hover { background: rgba(255,255,255,0.2); }
+
+  .modal input, .modal textarea {
+    background: rgba(255,255,255,0.06);
+    border: 1.5px solid rgba(255,255,255,0.12);
+    color: #fff;
+  }
+  .modal input:focus, .modal textarea:focus {
+    border-color: var(--accent);
+    background: rgba(255,255,255,0.1);
+  }
+
+  .section-label {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 24px 0 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+
+  /* THEME COLORS */
+  .theme-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  .theme-swatch {
+    height: 40px;
+    border-radius: 10px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all 0.2s;
+    position: relative;
+  }
+  .theme-swatch:hover { transform: scale(1.05); }
+  .theme-swatch.active { border-color: #fff; box-shadow: 0 0 0 3px rgba(255,255,255,0.3); }
+  .theme-swatch.active::after {
+    content: '✓';
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 14px;
+    font-weight: bold;
+  }
+
+  /* PASSWORD SCREEN */
+  .pw-screen {
+    text-align: center;
+    padding: 20px 0;
+  }
+  .pw-screen p { color: var(--subtext); margin-bottom: 16px; font-size: 0.9rem; }
+  .pw-error { color: #ff6b6b; font-size: 0.85rem; margin-top: 8px; display: none; }
+
+  /* SAVE BUTTON */
+  .save-btn {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, var(--accent), #f0a500);
+    border: none;
+    border-radius: 12px;
+    color: #111;
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.1rem;
+    cursor: pointer;
+    margin-top: 24px;
+    transition: all 0.2s;
+  }
+  .save-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(247,201,72,0.3); }
+
+  /* EMAILJS SETUP INFO */
+  .info-box {
+    background: rgba(247,201,72,0.08);
+    border: 1px solid rgba(247,201,72,0.2);
+    border-radius: 12px;
+    padding: 14px 16px;
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.7);
+    line-height: 1.6;
+    margin-top: 12px;
+  }
+  .info-box strong { color: var(--accent); }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 3px; }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: #fff;
+    color: #111;
+    padding: 12px 22px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    z-index: 999;
+    transition: transform 0.3s ease;
+    white-space: nowrap;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- PARTICLES -->
+<div class="particles" id="particles"></div>
+
+<!-- ADMIN BUTTON -->
+<button class="admin-btn" onclick="openAdmin()">⚙️ Admin Panel</button>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- MAIN CONTENT -->
+<div class="container">
+  <div class="live-badge"><div class="live-dot"></div> GIVEAWAY BERLANGSUNG</div>
+  <h1 class="title" id="mainTitle">GIVEAWAY!</h1>
+  <p class="subtitle" id="mainSubtitle">Masuk dan menangkan hadiah eksklusif</p>
+
+  <!-- PRIZE CARD -->
+  <div class="prize-card">
+    <div class="prize-image-wrapper" id="prizeImageWrapper">
+      <div class="prize-image-placeholder" id="imagePlaceholder">
+        <span class="icon">🎁</span>
+        <span>Set gambar di Admin Panel</span>
+      </div>
+    </div>
+    <div class="prize-info">
+      <div class="prize-label">🏆 Hadiah Utama</div>
+      <div class="prize-name" id="prizeName">Nama Hadiah</div>
+      <div class="prize-desc" id="prizeDesc">Deskripsi hadiah akan muncul di sini. Edit melalui Admin Panel.</div>
+    </div>
+  </div>
+
+  <!-- FORM CARD -->
+  <div class="form-card">
+    <div id="formArea">
+      <div class="form-title">✍️ Daftarkan diri kamu</div>
+
+      <div class="field">
+        <label>Username Roblox</label>
+        <input type="text" id="robloxUser" placeholder="Masukkan username Roblox kamu..." maxlength="20">
+      </div>
+
+      <div class="field">
+        <label>Kenapa kamu layak menang?</label>
+        <textarea id="reason" rows="4" maxlength="300" placeholder="Ceritakan alasanmu dengan meyakinkan..."></textarea>
+        <div class="char-count"><span id="charCount">0</span>/300</div>
+      </div>
+
+      <button class="submit-btn" id="submitBtn" onclick="submitEntry()">
+        🎉 Ikut Giveaway!
+      </button>
+    </div>
+
+    <div class="success-box" id="successBox">
+      <div class="big-emoji">🎊</div>
+      <h3>Berhasil Masuk!</h3>
+      <p>Pendaftaran kamu sudah diterima.<br>Pantau pengumuman pemenang ya!</p>
+    </div>
+  </div>
+
+</div><!-- end container -->
+
+<!-- ADMIN MODAL -->
+<div class="modal-overlay" id="adminModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">⚙️ Admin Panel</div>
+      <button class="close-btn" onclick="closeAdmin()">✕</button>
+    </div>
+
+    <!-- PASSWORD SCREEN -->
+    <div class="pw-screen" id="pwScreen">
+      <p>🔒 Masukkan password admin untuk lanjut</p>
+      <input type="password" id="pwInput" placeholder="Password admin..." onkeydown="if(event.key==='Enter')checkPassword()">
+      <p class="pw-error" id="pwError">❌ Password salah!</p>
+      <button class="save-btn" onclick="checkPassword()" style="margin-top:14px">Masuk</button>
+    </div>
+
+    <!-- SETTINGS (hidden until pw correct) -->
+    <div id="settingsArea" style="display:none">
+
+      <div class="section-label">🎁 Pengaturan Hadiah</div>
+
+      <div class="field">
+        <label>Nama Hadiah</label>
+        <input type="text" id="aPrizeName" placeholder="Contoh: Rare Item, Robux, dll">
+      </div>
+
+      <div class="field">
+        <label>Deskripsi Hadiah</label>
+        <textarea id="aPrizeDesc" rows="3" placeholder="Jelaskan hadiah secara singkat..."></textarea>
+      </div>
+
+      <div class="field">
+        <label>URL Gambar Hadiah</label>
+        <input type="url" id="aPrizeImage" placeholder="https://... (paste link gambar)">
+      </div>
+
+      <div class="field">
+        <label>Judul Halaman</label>
+        <input type="text" id="aTitle" placeholder="Contoh: GIVEAWAY SPESIAL!">
+      </div>
+
+      <div class="field">
+        <label>Subtitle Halaman</label>
+        <input type="text" id="aSubtitle" placeholder="Contoh: Kesempatan terbatas!">
+      </div>
+
+      <div class="section-label">🎨 Tema Warna Latar</div>
+      <div class="theme-grid" id="themeGrid">
+        <!-- filled by JS -->
+      </div>
+
+      <div class="section-label">📧 EmailJS (Notifikasi Email)</div>
+
+      <div class="field">
+        <label>EmailJS Service ID</label>
+        <input type="text" id="aServiceId" placeholder="service_xxxxxxx">
+      </div>
+      <div class="field">
+        <label>EmailJS Template ID</label>
+        <input type="text" id="aTemplateId" placeholder="template_xxxxxxx">
+      </div>
+      <div class="field">
+        <label>EmailJS Public Key</label>
+        <input type="text" id="aPublicKey" placeholder="public key dari EmailJS">
+      </div>
+
+      <div class="info-box">
+        <strong>Cara setup EmailJS:</strong><br>
+        1. Daftar gratis di <strong>emailjs.com</strong><br>
+        2. Add Email Service (Gmail, dll) → dapat <strong>Service ID</strong><br>
+        3. Buat Email Template → dapat <strong>Template ID</strong><br>
+        4. Di template, gunakan variabel: <strong>{{username}}</strong>, <strong>{{reason}}</strong>, <strong>{{time}}</strong><br>
+        5. Settings → API Keys → copy <strong>Public Key</strong><br>
+        6. Paste semua di field di atas & Save!
+      </div>
+
+      <div class="field" style="margin-top:16px">
+        <label>Ganti Password Admin</label>
+        <input type="password" id="aNewPw" placeholder="Password baru (kosongkan jika tidak mau ganti)">
+      </div>
+
+      <button class="save-btn" onclick="saveSettings()">💾 Simpan Semua Perubahan</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// DEFAULT CONFIG
+// ============================================================
+const DEFAULT_CONFIG = {
+  prizeName: 'Nama Hadiah',
+  prizeDesc: 'Deskripsi hadiah akan muncul di sini. Edit melalui Admin Panel.',
+  prizeImage: '',
+  title: 'GIVEAWAY!',
+  subtitle: 'Masuk dan menangkan hadiah eksklusif',
+  theme: 0,
+  adminPassword: 'admin123',
+  ejsServiceId: '',
+  ejsTemplateId: '',
+  ejsPublicKey: '',
+};
+
+const THEMES = [
+  { name:'Purple Night', bg1:'#0f0c29', bg2:'#302b63', bg3:'#24243e' },
+  { name:'Ocean',        bg1:'#0a2342', bg2:'#0d3b6e', bg3:'#051a2e' },
+  { name:'Emerald',      bg1:'#0a2e1a', bg2:'#114d2d', bg3:'#062014' },
+  { name:'Crimson',      bg1:'#2a0a0a', bg2:'#4d1111', bg3:'#1a0505' },
+  { name:'Sunset',       bg1:'#1a0a2e', bg2:'#3d1a5e', bg3:'#2e0a1a' },
+  { name:'Midnight',     bg1:'#0d0d0d', bg2:'#1a1a2e', bg3:'#16213e' },
+  { name:'Teal Deep',    bg1:'#0a1a2a', bg2:'#0d3040', bg3:'#051520' },
+  { name:'Rose',         bg1:'#1a0a18', bg2:'#3d1140', bg3:'#2e0a20' },
+  { name:'Gold Dark',    bg1:'#1a1000', bg2:'#3d2b00', bg3:'#2e1e00' },
+  { name:'Slate',        bg1:'#0d1117', bg2:'#1a2234', bg3:'#0f1623' },
+];
+
+// ============================================================
+// STATE
+// ============================================================
+let cfg = { ...DEFAULT_CONFIG };
+let currentTheme = 0;
+let adminUnlocked = false;
+
+// ============================================================
+// LOAD CONFIG
+// ============================================================
+function loadConfig() {
+  try {
+    const saved = localStorage.getItem('giveaway_cfg');
+    if (saved) cfg = { ...DEFAULT_CONFIG, ...JSON.parse(saved) };
+  } catch(e) {}
+  applyConfig();
+}
+
+function saveConfig() {
+  localStorage.setItem('giveaway_cfg', JSON.stringify(cfg));
+}
+
+function applyConfig() {
+  document.getElementById('mainTitle').textContent = cfg.title;
+  document.getElementById('mainSubtitle').textContent = cfg.subtitle;
+  document.getElementById('prizeName').textContent = cfg.prizeName;
+  document.getElementById('prizeDesc').textContent = cfg.prizeDesc;
+
+  const wrapper = document.getElementById('prizeImageWrapper');
+  const placeholder = document.getElementById('imagePlaceholder');
+  const existingImg = wrapper.querySelector('img');
+
+  if (cfg.prizeImage) {
+    if (existingImg) { existingImg.src = cfg.prizeImage; }
+    else {
+      if (placeholder) placeholder.style.display = 'none';
+      const img = document.createElement('img');
+      img.src = cfg.prizeImage;
+      img.alt = cfg.prizeName;
+      img.onerror = () => { img.remove(); if(placeholder) placeholder.style.display='flex'; };
+      wrapper.appendChild(img);
+    }
+  } else {
+    if (existingImg) existingImg.remove();
+    if (placeholder) placeholder.style.display = 'flex';
+  }
+
+  applyTheme(cfg.theme || 0);
+}
+
+function applyTheme(idx) {
+  const t = THEMES[idx] || THEMES[0];
+  document.body.style.background = `linear-gradient(135deg, ${t.bg1}, ${t.bg2}, ${t.bg3})`;
+  document.body.style.backgroundAttachment = 'fixed';
+  generateParticles(t.bg2);
+}
+
+// ============================================================
+// PARTICLES
+// ============================================================
+function generateParticles(baseColor) {
+  const container = document.getElementById('particles');
+  container.innerHTML = '';
+  const colors = ['#f7c948','#ff6b6b','#a29bfe','#74b9ff','#55efc4'];
+  for (let i = 0; i < 18; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const size = Math.random() * 60 + 20;
+    p.style.cssText = `
+      width: ${size}px; height: ${size}px;
+      left: ${Math.random()*100}%;
+      background: ${colors[Math.floor(Math.random()*colors.length)]};
+      animation-duration: ${8 + Math.random()*12}s;
+      animation-delay: ${Math.random()*8}s;
+    `;
+    container.appendChild(p);
+  }
+}
+
+// ============================================================
+// THEME GRID
+// ============================================================
+function buildThemeGrid() {
+  const grid = document.getElementById('themeGrid');
+  grid.innerHTML = '';
+  THEMES.forEach((t, i) => {
+    const sw = document.createElement('div');
+    sw.className = 'theme-swatch' + (cfg.theme === i ? ' active' : '');
+    sw.title = t.name;
+    sw.style.background = `linear-gradient(135deg, ${t.bg1}, ${t.bg2})`;
+    sw.onclick = () => {
+      document.querySelectorAll('.theme-swatch').forEach(s => s.classList.remove('active'));
+      sw.classList.add('active');
+      cfg.theme = i;
+      applyTheme(i);
+    };
+    grid.appendChild(sw);
+  });
+}
+
+// ============================================================
+// ADMIN
+// ============================================================
+function openAdmin() {
+  document.getElementById('adminModal').classList.add('active');
+  adminUnlocked = false;
+  document.getElementById('pwScreen').style.display = 'block';
+  document.getElementById('settingsArea').style.display = 'none';
+  document.getElementById('pwInput').value = '';
+  document.getElementById('pwError').style.display = 'none';
+  setTimeout(() => document.getElementById('pwInput').focus(), 100);
+}
+
+function closeAdmin() {
+  document.getElementById('adminModal').classList.remove('active');
+}
+
+function checkPassword() {
+  const val = document.getElementById('pwInput').value;
+  if (val === cfg.adminPassword) {
+    adminUnlocked = true;
+    document.getElementById('pwScreen').style.display = 'none';
+    document.getElementById('settingsArea').style.display = 'block';
+    populateSettings();
+    buildThemeGrid();
+  } else {
+    document.getElementById('pwError').style.display = 'block';
+    document.getElementById('pwInput').value = '';
+    document.getElementById('pwInput').focus();
+  }
+}
+
+function populateSettings() {
+  document.getElementById('aPrizeName').value  = cfg.prizeName;
+  document.getElementById('aPrizeDesc').value  = cfg.prizeDesc;
+  document.getElementById('aPrizeImage').value = cfg.prizeImage;
+  document.getElementById('aTitle').value      = cfg.title;
+  document.getElementById('aSubtitle').value   = cfg.subtitle;
+  document.getElementById('aServiceId').value  = cfg.ejsServiceId  || '';
+  document.getElementById('aTemplateId').value = cfg.ejsTemplateId || '';
+  document.getElementById('aPublicKey').value  = cfg.ejsPublicKey  || '';
+  document.getElementById('aNewPw').value = '';
+}
+
+function saveSettings() {
+  cfg.prizeName    = document.getElementById('aPrizeName').value.trim() || cfg.prizeName;
+  cfg.prizeDesc    = document.getElementById('aPrizeDesc').value.trim() || cfg.prizeDesc;
+  cfg.prizeImage   = document.getElementById('aPrizeImage').value.trim();
+  cfg.title        = document.getElementById('aTitle').value.trim()      || cfg.title;
+  cfg.subtitle     = document.getElementById('aSubtitle').value.trim()   || cfg.subtitle;
+  cfg.ejsServiceId = document.getElementById('aServiceId').value.trim();
+  cfg.ejsTemplateId= document.getElementById('aTemplateId').value.trim();
+  cfg.ejsPublicKey = document.getElementById('aPublicKey').value.trim();
+
+  const newPw = document.getElementById('aNewPw').value;
+  if (newPw.length >= 4) cfg.adminPassword = newPw;
+  else if (newPw.length > 0 && newPw.length < 4) {
+    showToast('⚠️ Password minimal 4 karakter!'); return;
+  }
+
+  saveConfig();
+  applyConfig();
+  buildThemeGrid();
+  closeAdmin();
+  showToast('✅ Pengaturan berhasil disimpan!');
+}
+
+// ============================================================
+// FORM SUBMIT
+// ============================================================
+document.getElementById('reason').addEventListener('input', function() {
+  document.getElementById('charCount').textContent = this.value.length;
+});
+
+async function submitEntry() {
+  const username = document.getElementById('robloxUser').value.trim();
+  const reason   = document.getElementById('reason').value.trim();
+  const btn      = document.getElementById('submitBtn');
+
+  if (!username) { showToast('⚠️ Username Roblox tidak boleh kosong!'); return; }
+  if (!reason)   { showToast('⚠️ Tolong isi alasan kamu!'); return; }
+  if (reason.length < 20) { showToast('⚠️ Alasan terlalu pendek, minimal 20 karakter!'); return; }
+
+  btn.disabled = true;
+  btn.textContent = '⏳ Mendaftar...';
+
+  // Send email via EmailJS
+  let emailSent = false;
+  if (cfg.ejsServiceId && cfg.ejsTemplateId && cfg.ejsPublicKey) {
+    try {
+      emailjs.init({ publicKey: cfg.ejsPublicKey });
+      await emailjs.send(cfg.ejsServiceId, cfg.ejsTemplateId, {
+        username: username,
+        reason:   reason,
+        time:     new Date().toLocaleString('id-ID'),
+        prize:    cfg.prizeName,
+      });
+      emailSent = true;
+    } catch(e) {
+      console.error('EmailJS error:', e);
+    }
+  }
+
+  // Show success
+  document.getElementById('formArea').style.display = 'none';
+  document.getElementById('successBox').style.display = 'block';
+
+  if (emailSent) showToast('📧 Notifikasi email terkirim!');
+  else if (!cfg.ejsServiceId) showToast('ℹ️ EmailJS belum dikonfigurasi');
+}
+
+// ============================================================
+// TOAST
+// ============================================================
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ============================================================
+// CLOSE MODAL ON BG CLICK
+// ============================================================
+document.getElementById('adminModal').addEventListener('click', function(e) {
+  if (e.target === this) closeAdmin();
+});
+
+// ============================================================
+// INIT
+// ============================================================
+loadConfig();
+generateParticles('#302b63');
+</script>
+</body>
+         </html>
